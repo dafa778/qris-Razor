@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QRIS Payment Gateway</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://files.catbox.moe/gfd8xu.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .qris-box {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      padding: 25px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .qris-box img.logo {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+
+    .qris-box input, .qris-box select, .qris-box button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .qris-box button {
+      background: #EF233C;
+      color: white;
+      border: none;
+      font-weight: bold;
+    }
+
+    .qr-area {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .qr-area img {
+      width: 200px;
+      border-radius: 10px;
+    }
+
+    .info {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="qris-box">
+    <img src="https://files.catbox.moe/iffu3e.jpg" class="logo" alt="QRIS Logo">
+    <h3>Pembayaran AllQRIS</h3>
+
+    <input type="text" id="nama" placeholder="Nama Anda" required>
+    <input type="number" id="nominal" placeholder="Nominal (Rp)" required>
+    <select id="metode">
+      <option value="qris">QRIS</option>
+      <option value="dana">DANA</option>
+      <option value="ovo">OVO</option>
+      <option value="gopay">GoPay</option>
+    </select>
+    <button onclick="prosesPembayaran()">Bayar Sekarang</button>
+
+    <div class="qr-area" id="qrArea">
+      <div class="info" id="paymentInfo"></div>
+      <img id="qrImage" src="" alt="Kode QR">
+      <p>Scan menggunakan aplikasi e-wallet Anda</p>
+    </div>
+  </div>
+
+  <script>
+    function prosesPembayaran() {
+      const nama = document.getElementById("nama").value.trim();
+      const nominal = document.getElementById("nominal").value.trim();
+      const metode = document.getElementById("metode").value;
+
+      if (!nama || !nominal) {
+        alert("Harap isi nama dan nominal.");
+        return;
+      }
+
+      const metodeLabel = metode.toUpperCase();
+      const qrSrc = `img/${metode}.png`;
+
+      document.getElementById("qrImage").src = qrSrc;
+      document.getElementById("paymentInfo").innerHTML = `
+        <b>Nama:</b> ${nama}<br>
+        <b>Nominal:</b> Rp ${parseInt(nominal).toLocaleString()}<br>
+        <b>Metode:</b> ${metodeLabel}
+      `;
+      document.getElementById("qrArea").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
